@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './style.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -7,6 +7,8 @@ function List() {
   const [usersList, setUsersList] = useState([]);
   const [userData, setUserData] = useState({});
   const [selectedUserID, setSelectedUserID] = useState(null);
+
+  const userID = useRef();
 
   useEffect(() => {
     fetch(
@@ -33,7 +35,7 @@ function List() {
     )
       .then((response) => response.json())
       .then((json) => {
-        console.log('User data loaded');
+        console.log('User ID=' + selectedUserID + ' data loaded');
         setUserData(json);
         console.log(userData);
       });

@@ -7,8 +7,9 @@ function List() {
   const [usersList, setUsersList] = useState([]);
   const [userData, setUserData] = useState({});
   const [selectedUserID, setSelectedUserID] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const userID = useRef();
+  const selectedUserIDRef = useRef();
 
   useEffect(() => {
     fetch(
@@ -24,20 +25,36 @@ function List() {
   const selectUserHandle = (userID) => {
     console.log('Selected user ID: ' + userID);
     setSelectedUserID(userID);
+    setIsLoading(false);
   };
 
   useEffect(() => {
     console.log('Selected user ID for fetch: ' + selectedUserID);
+    selectedUserIDRef.current = selectedUserID;
+
+    setIsLoading(true);
     fetch(
       'https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/' +
         selectedUserID +
         '.json'
     )
       .then((response) => response.json())
+      .then(
+        (json) =>
+          new Promise((resolve) => setTimeout(() => resolve(json), 3000))
+      )
       .then((json) => {
-        console.log('User ID=' + selectedUserID + ' data loaded');
-        setUserData(json);
+        if (selectedUserIDRef.current === selectedUserID) {
+          setIsLoading(false);
+          setUserData(json);
+        }
         console.log(userData);
+        console.log(
+          'User ID=' +
+            selectedUserID +
+            ' data ' +
+            (isLoading ? 'loaded' : 'not loaded')
+        );
       });
   }, [selectedUserID]);
 

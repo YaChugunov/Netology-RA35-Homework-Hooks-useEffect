@@ -60,26 +60,24 @@ function List(props) {
 
   return (
     <div className="row">
-    <h1 className="display-4 mb-4">List and details</h1>
-        <div className="col">
-    <ul className="list-group">
-      {props.usersList.map((user) => (
-        <li
-          className="list-group-item"
-          key={user.id}
-          onClick={() => selectUserHandle(user.id)}
-        >
-          {user.id}. {user.name}
-        </li>
-      ))}
-    </ul>
+      <h1 className="display-4 mb-4">List and details</h1>
+      <div className="col">
+        <ul className="list-group">
+          {props.usersList.map((user) => (
+            <li
+              className="list-group-item"
+              key={user.id}
+              onClick={() => selectUserHandle(user.id)}
+            >
+              {user.id}. {user.name}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="col">
+        <Details userID={selectedUserID} />
+      </div>
     </div>
-    <div className="col">
-          <Details userID={} />
-        </div>
-        </div>
-
-
   );
 }
 
@@ -100,7 +98,7 @@ export default function App() {
 
   return (
     <div className="container">
-          <List usersList={usersList} />
+      <List usersList={usersList} />
     </div>
   );
 }

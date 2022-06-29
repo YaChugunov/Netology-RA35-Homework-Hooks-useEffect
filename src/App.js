@@ -5,8 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Details(props) {
   const [isLoading, setIsLoading] = useState(false);
-  const userData = useRef(null);
-  const userDataDetails = useRef(null);
+  const userDataRef = useRef(null);
+  const userDataDetailsRef = useRef(null);
 
   useEffect(() => {
     console.log('ID выбранного пользователя для запроса: ' + props.userID);
@@ -24,26 +24,26 @@ function Details(props) {
         return;
       }
       // Обрабатываем ответ
-      response.json().then(function (data) {
-        Object.assign(userData, data);
-        Object.assign(userDataDetails, data.details);
+      response.json().then(function (jsonData) {
+        Object.assign(userDataRef, jsonData);
+        Object.assign(userDataDetailsRef, jsonData.details);
         setIsLoading(false);
-        console.log(userData);
+        console.log(userDataRef);
       });
     });
   }, [props.userID]);
 
   return (
-    <div className="card" key={userData.id}>
-      <img src={userData.avatar} className="card-img-top" alt="..." />
+    <div className="card" key={userDataRef.id}>
+      <img src={userDataRef.avatar} className="card-img-top" alt="..." />
       <div className="card-body">
         <h5 className="card-title">
-          {userData.id}. {userData.name}
+          {userDataRef.id}. {userDataRef.name}
         </h5>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">{userDataDetails.city}</li>
-          <li className="list-group-item">{userDataDetails.company}</li>
-          <li className="list-group-item">{userDataDetails.position}</li>
+          <li className="list-group-item">{userDataDetailsRef.city}</li>
+          <li className="list-group-item">{userDataDetailsRef.company}</li>
+          <li className="list-group-item">{userDataDetailsRef.position}</li>
         </ul>
       </div>
     </div>

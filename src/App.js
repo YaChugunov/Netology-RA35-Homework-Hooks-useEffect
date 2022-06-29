@@ -3,6 +3,24 @@ import './style.css';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+function Details() {
+  return (
+    <div className="card">
+      <img src="https://i.pravatar.cc/300" className="card-img-top" alt="..." />
+      <div className="card-body">
+        <h5 className="card-title">Card title</h5>
+        <p className="card-text">
+          Some quick example text to build on the card title and make up the
+          bulk of the card's content.
+        </p>
+        <a href="#" className="btn btn-primary">
+          Go somewhere
+        </a>
+      </div>
+    </div>
+  );
+}
+
 function List() {
   const [usersList, setUsersList] = useState([]);
   const [userData, setUserData] = useState({});
@@ -15,18 +33,18 @@ function List() {
     )
       .then((response) => response.json())
       .then((json) => {
-        console.log('Users list loaded');
+        console.log('Список пользователей загружен');
         setUsersList(json);
       });
   }, []);
 
   const selectUserHandle = (userID) => {
-    console.log('Clicked on user ID: ' + userID);
+    console.log('Выбран пользователь с ID: ' + userID);
     setSelectedUserID(userID);
   };
 
   useEffect(() => {
-    console.log('Selected user ID for fetch: ' + selectedUserID);
+    console.log('ID выбранного пользователя для запроса: ' + selectedUserID);
 
     setIsLoading(true);
     fetch(
@@ -36,7 +54,7 @@ function List() {
     ).then((response) => {
       if (response.status !== 200) {
         console.log(
-          'Looks like there was a problem. Status Code: ' + response.status
+          'Проблема загрузки данных. Статус ошибки: ' + response.status
         );
         return;
       }
@@ -64,8 +82,6 @@ function List() {
     </ul>
   );
 }
-
-function Details() {}
 
 export default function App() {
   return (

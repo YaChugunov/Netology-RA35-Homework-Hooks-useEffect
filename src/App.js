@@ -9,8 +9,6 @@ function List() {
   const [selectedUserID, setSelectedUserID] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const selectedUserIDRef = useRef();
-
   useEffect(() => {
     fetch(
       'https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/users.json'
@@ -23,39 +21,33 @@ function List() {
   }, []);
 
   const selectUserHandle = (userID) => {
-    console.log('Selected user ID: ' + userID);
+    console.log('Clicked on user ID: ' + userID);
     setSelectedUserID(userID);
-    setIsLoading(false);
   };
 
   useEffect(() => {
     console.log('Selected user ID for fetch: ' + selectedUserID);
-    selectedUserIDRef.current = selectedUserID;
 
     setIsLoading(true);
     fetch(
       'https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/' +
         selectedUserID +
         '.json'
-    )
-      .then((response) => response.json())
-      .then(
-        (json) =>
-          new Promise((resolve) => setTimeout(() => resolve(json), 3000))
-      )
-      .then((json) => {
-        if (selectedUserIDRef.current === selectedUserID) {
-          setIsLoading(false);
-          setUserData(json);
-        }
-        console.log(userData);
+    ).then((response) => {
+      if (response.status !== 200) {
         console.log(
-          'User ID=' +
-            selectedUserID +
-            ' data ' +
-            (isLoading ? 'loaded' : 'not loaded')
+          'Looks like there was a problem. Status Code: ' + response.status
         );
+        return;
+      }
+
+      // Examine the text in the response
+      response.json().then(function (data) {
+        console.log(data);
+        setUserData(json);
+        setIsLoading(false);
       });
+    });
   }, [selectedUserID]);
 
   return (

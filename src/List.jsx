@@ -51,7 +51,8 @@ function Details(props) {
   );
 }
 
-function List(props) {
+
+export default function List() {
   const [selectedUserID, setSelectedUserID] = useState(null);
   const [usersList, setUsersList] = useState([]);
 
@@ -70,8 +71,13 @@ function List(props) {
     console.log('Выбран пользователь с ID: ' + userID);
     setSelectedUserID(userID);
   };
+
   return (
-    <ul className="list-group">
+    <div className="container">
+      <div className="row">
+        <h1 className="display-4 mb-4">List and details</h1>
+        <div className="col">
+        <ul className="list-group">
       {usersList.map((user) => (
         <li
           className="list-group-item"
@@ -82,19 +88,9 @@ function List(props) {
         </li>
       ))}
     </ul>
-  );
-}
-
-export default function Main() {
-  return (
-    <div className="container">
-      <div className="row">
-        <h1 className="display-4 mb-4">List and details</h1>
-        <div className="col">
-          <List />
         </div>
         <div className="col">
-          <Details />
+          <Details selectedUserID={}/>
         </div>
       </div>
     </div>

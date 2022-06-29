@@ -1,8 +1,8 @@
 import React from 'react';
 import './style.css';
 
-import Main from './Main';
+import List from './List';
 
 export default function App() {
-  return <Main />;
+  return <List />;
 }

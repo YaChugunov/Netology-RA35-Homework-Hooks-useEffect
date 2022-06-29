@@ -51,10 +51,19 @@ function Details(props) {
 
 function List(props) {
   const [selectedUserID, setSelectedUserID] = useState(null);
+  const [updateDetails, setUpdateDetails] = useState(false);
+
+  const tmp = useRef();
+
+  useEffect(() => {
+    console.log('Выбран пользователь с ID: ', updateDetails);
+    setSelectedUserID((prevState) => tmp.current);
+    console.log('tmp: ', tmp.current);
+  }, [updateDetails]);
 
   const selectUserHandle = (userID) => {
-    setSelectedUserID(userID);
-    console.log('Выбран пользователь с ID: ' + userID);
+    tmp.current = userID;
+    setUpdateDetails((prevState) => !prevState);
   };
 
   return (
@@ -74,7 +83,7 @@ function List(props) {
         </ul>
       </div>
       <div className="col">
-        {selectedUserID !== null ? <Details userID={selectedUserID} /> : ''}
+        {tmp.current !== null ? <Details userID={tmp.current} /> : ''}
       </div>
     </div>
   );

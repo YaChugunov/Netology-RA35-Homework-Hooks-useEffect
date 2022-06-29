@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function Details(props) {
   const [isLoading, setIsLoading] = useState(false);
   const userData = useRef(null);
+  const userDataDetails = useRef(null);
 
   useEffect(() => {
     console.log('ID выбранного пользователя для запроса: ' + props.userID);
@@ -22,10 +23,10 @@ function Details(props) {
         );
         return;
       }
-
-      // Examine the text in the response
+      // Обрабатываем ответ
       response.json().then(function (data) {
         Object.assign(userData, data);
+        Object.assign(userDataDetails, data.details);
         setIsLoading(false);
         console.log(userData);
       });
@@ -33,11 +34,17 @@ function Details(props) {
   }, [props.userID]);
 
   return (
-    <div className="card">
+    <div className="card" key={userData.id}>
       <img src={userData.avatar} className="card-img-top" alt="..." />
       <div className="card-body">
-        <h5 className="card-title">{userData.name}</h5>
-        <p className="card-text">{}</p>
+        <h5 className="card-title">
+          {userData.id}. {userData.name}
+        </h5>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">{userDataDetails.city}</li>
+          <li class="list-group-item">{userDataDetails.company}</li>
+          <li class="list-group-item">{userDataDetails.position}</li>
+        </ul>
       </div>
     </div>
   );
@@ -69,7 +76,7 @@ function List(props) {
         </ul>
       </div>
       <div className="col">
-        <Details userID={selectedUserID} />
+        {selectedUserID !== null ? <Details userID={selectedUserID} /> : ''}
       </div>
     </div>
   );

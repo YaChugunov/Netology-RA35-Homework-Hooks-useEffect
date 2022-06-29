@@ -24,10 +24,10 @@ function Details(props) {
       // Обрабатываем ответ
       response.json().then(function (jsonData) {
         console.log('Карточка пользователя загружена');
-        console.log(jsonData);
+        console.log('jsonData', jsonData);
         Object.assign(userDataRef, jsonData);
         Object.assign(userDataDetailsRef, jsonData.details);
-        console.log(userDataRef);
+        console.log('userDataRef', userDataRef);
       });
     });
   }, [props.userID]);
@@ -53,8 +53,8 @@ function List(props) {
   const [selectedUserID, setSelectedUserID] = useState(null);
 
   const selectUserHandle = (userID) => {
-    setSelectedUserID((prevUserID) => userID);
-    console.log('Выбран пользователь с ID: ' + selectedUserID);
+    setSelectedUserID(userID);
+    console.log('Выбран пользователь с ID: ' + userID);
   };
 
   return (

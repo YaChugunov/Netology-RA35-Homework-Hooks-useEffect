@@ -40,10 +40,10 @@ function Details(props) {
         <h5 className="card-title">
           {userData.id}. {userData.name}
         </h5>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">{userDataDetails.city}</li>
-          <li class="list-group-item">{userDataDetails.company}</li>
-          <li class="list-group-item">{userDataDetails.position}</li>
+        <ul className="list-group list-group-flush">
+          <li className="list-group-item">{userDataDetails.city}</li>
+          <li className="list-group-item">{userDataDetails.company}</li>
+          <li className="list-group-item">{userDataDetails.position}</li>
         </ul>
       </div>
     </div>

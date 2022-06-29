@@ -24,6 +24,7 @@ function Details(props) {
       // Обрабатываем ответ
       response.json().then(function (jsonData) {
         console.log('Карточка пользователя загружена');
+        console.log(jsonData);
         Object.assign(userDataRef, jsonData);
         Object.assign(userDataDetailsRef, jsonData.details);
         console.log(userDataRef);
@@ -52,8 +53,8 @@ function List(props) {
   const [selectedUserID, setSelectedUserID] = useState(null);
 
   const selectUserHandle = (userID) => {
-    console.log('Выбран пользователь с ID: ' + userID);
-    setSelectedUserID(userID);
+    setSelectedUserID((prevUserID) => userID);
+    console.log('Выбран пользователь с ID: ' + selectedUserID);
   };
 
   return (

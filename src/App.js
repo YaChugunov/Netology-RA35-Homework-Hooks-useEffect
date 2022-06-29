@@ -26,7 +26,7 @@ function Details(props) {
       // Examine the text in the response
       response.json().then(function (data) {
         console.log(data);
-        setUserData(json);
+        setUserData(data);
         setIsLoading(false);
       });
     });
@@ -34,7 +34,7 @@ function Details(props) {
 
   return (
     <div className="card">
-      <img src="https://i.pravatar.cc/300" className="card-img-top" alt="..." />
+      <img src={userData.avatar} className="card-img-top" alt="..." />
       <div className="card-body">
         <h5 className="card-title">{userData.name}</h5>
         <p className="card-text">

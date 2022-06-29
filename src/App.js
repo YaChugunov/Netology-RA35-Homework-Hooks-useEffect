@@ -4,14 +4,12 @@ import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Details(props) {
-  const [isLoading, setIsLoading] = useState(false);
   const userDataRef = useRef(null);
   const userDataDetailsRef = useRef(null);
 
   useEffect(() => {
     console.log('ID выбранного пользователя для запроса: ' + props.userID);
 
-    setIsLoading(true);
     fetch(
       'https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/' +
         props.userID +
@@ -25,9 +23,9 @@ function Details(props) {
       }
       // Обрабатываем ответ
       response.json().then(function (jsonData) {
+        console.log('Карточка пользователя загружена');
         Object.assign(userDataRef, jsonData);
         Object.assign(userDataDetailsRef, jsonData.details);
-        setIsLoading(false);
         console.log(userDataRef);
       });
     });
@@ -52,7 +50,6 @@ function Details(props) {
 
 function List(props) {
   const [selectedUserID, setSelectedUserID] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const selectUserHandle = (userID) => {
     console.log('Выбран пользователь с ID: ' + userID);
@@ -89,12 +86,18 @@ export default function App() {
   useEffect(() => {
     fetch(
       'https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/users.json'
-    )
-      .then((response) => response.json())
-      .then((json) => {
+    ).then((response) => {
+      if (response.status !== 200) {
+        console.log(
+          'Проблема загрузки данных. Статус ошибки: ' + response.status
+        );
+        return;
+      }
+      response.json().then(function (jsonData) {
         console.log('Список пользователей загружен');
-        setUsersList(json);
+        setUsersList(jsonData);
       });
+    });
   }, []);
 
   return (

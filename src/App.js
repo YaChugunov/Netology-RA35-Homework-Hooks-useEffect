@@ -4,8 +4,8 @@ import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Details(props) {
-  const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+  const userData = useRef(null);
 
   useEffect(() => {
     console.log('ID выбранного пользователя для запроса: ' + props.userID);
@@ -25,7 +25,7 @@ function Details(props) {
 
       // Examine the text in the response
       response.json().then(function (data) {
-        setUserData(data);
+        Object.assign(userData, data);
         setIsLoading(false);
         console.log(userData);
       });

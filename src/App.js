@@ -4,12 +4,14 @@ import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Details(props) {
-  const userDataRef = useRef(null);
-  const userDataDetailsRef = useRef(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const userData = useRef(null);
+  const userDataDetails = useRef(null);
 
   useEffect(() => {
     console.log('ID выбранного пользователя для запроса: ' + props.userID);
 
+    setIsLoading(true);
     fetch(
       'https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/' +
         props.userID +
@@ -22,27 +24,26 @@ function Details(props) {
         return;
       }
       // Обрабатываем ответ
-      response.json().then(function (jsonData) {
-        console.log('Карточка пользователя загружена');
-        console.log('jsonData', jsonData);
-        Object.assign(userDataRef, jsonData);
-        Object.assign(userDataDetailsRef, jsonData.details);
-        console.log('userDataRef', userDataRef);
+      response.json().then(function (data) {
+        Object.assign(userData, data);
+        Object.assign(userDataDetails, data.details);
+        setIsLoading(false);
+        console.log(userData);
       });
     });
   }, [props.userID]);
 
   return (
-    <div className="card" key={userDataRef.id}>
-      <img src={userDataRef.avatar} className="card-img-top" alt="..." />
+    <div className="card" key={userData.id}>
+      <img src={userData.avatar} className="card-img-top" alt="..." />
       <div className="card-body">
         <h5 className="card-title">
-          {userDataRef.id}. {userDataRef.name}
+          {userData.id}. {userData.name}
         </h5>
         <ul className="list-group list-group-flush">
-          <li className="list-group-item">{userDataDetailsRef.city}</li>
-          <li className="list-group-item">{userDataDetailsRef.company}</li>
-          <li className="list-group-item">{userDataDetailsRef.position}</li>
+          <li className="list-group-item">{userDataDetails.city}</li>
+          <li className="list-group-item">{userDataDetails.company}</li>
+          <li className="list-group-item">{userDataDetails.position}</li>
         </ul>
       </div>
     </div>
@@ -51,19 +52,11 @@ function Details(props) {
 
 function List(props) {
   const [selectedUserID, setSelectedUserID] = useState(null);
-  const [updateDetails, setUpdateDetails] = useState(false);
-
-  const tmp = useRef();
-
-  useEffect(() => {
-    console.log('Выбран пользователь с ID: ', updateDetails);
-    setSelectedUserID((prevState) => tmp.current);
-    console.log('tmp: ', tmp.current);
-  }, [updateDetails]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const selectUserHandle = (userID) => {
-    tmp.current = userID;
-    setUpdateDetails((prevState) => !prevState);
+    console.log('Выбран пользователь с ID: ' + userID);
+    setSelectedUserID(userID);
   };
 
   return (
@@ -83,7 +76,7 @@ function List(props) {
         </ul>
       </div>
       <div className="col">
-        {tmp.current !== null ? <Details userID={tmp.current} /> : ''}
+        {selectedUserID !== null ? <Details userID={selectedUserID} /> : ''}
       </div>
     </div>
   );
@@ -96,18 +89,12 @@ export default function App() {
   useEffect(() => {
     fetch(
       'https://raw.githubusercontent.com/netology-code/ra16-homeworks/master/hooks-context/use-effect/data/users.json'
-    ).then((response) => {
-      if (response.status !== 200) {
-        console.log(
-          'Проблема загрузки данных. Статус ошибки: ' + response.status
-        );
-        return;
-      }
-      response.json().then(function (jsonData) {
+    )
+      .then((response) => response.json())
+      .then((json) => {
         console.log('Список пользователей загружен');
-        setUsersList(jsonData);
+        setUsersList(json);
       });
-    });
   }, []);
 
   return (
